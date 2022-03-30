@@ -25,8 +25,10 @@ import org.springframework.security.oauth2.provider.expression.OAuth2MethodSecur
 import org.springframework.security.oauth2.provider.request.DefaultOAuth2RequestFactory;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 @Configuration
+@CrossOrigin
 public class OAuthConfiguration {
 
 	public static final String RESOURCE_ID = "financesControll";
@@ -56,7 +58,7 @@ public class OAuthConfiguration {
 			.and()
 			.withClient("cliente-canva")
 			.secret("$2a$10$6zSKaHn71WVp8aP37Q2Ow.oFVCgNbHncEuhPmMWmIdKDFaBDoiVwG")
-			.authorizedGrantTypes("authorization_code")
+			.authorizedGrantTypes("authorization_code", "implicit")
 			.scopes("read")
 			.redirectUris("https://www.canva.com/pt_br/")
 			.accessTokenValiditySeconds(3601)
@@ -81,7 +83,9 @@ public class OAuthConfiguration {
 		public void configure(HttpSecurity http) throws Exception {
 			http.authorizeRequests().anyRequest().authenticated().and()
 			.requestMatchers()
-			.antMatchers("/v2/categoria");
+			.antMatchers("/v2/categoria")
+			.and()
+			.cors();
 		}
 		
 		
